@@ -1,3 +1,5 @@
+mod days;
+
 fn main() {
-    println!("Hello, world!");
+    println!("Day1.1 result {:?}", days::day1::one());
 }

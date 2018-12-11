@@ -39,3 +39,34 @@ pub fn one() -> u32 {
        .fold((0,0), |(two_sum, three_sum), (two, three)| (two+two_sum, three+three_sum));
     two * three
 }
+
+fn keep_common(first:&String, second:&String) -> String {
+    first
+        .chars()
+        .zip(second.chars())
+        .filter_map(|(first_char, second_char)| match first_char == second_char {
+            true => Some(first_char),
+            false => None
+        })
+        .collect()
+}
+
+fn find_longest_common(head:String, tail:&Vec<String>) -> String {
+    tail
+        .into_iter()
+        .map(|line| keep_common(&head, line))
+        .fold(String::new(), |longest_line, line| if longest_line.len() > line.len() { longest_line } else { line })
+}
+
+pub fn two() -> String {
+    let mut input = parse_input();
+    //let mut input: Vec<String> = vec!["hej123q", "hejqqq4", "hej1234"].into_iter().map(|l| l.to_string()).collect();
+    let mut longest_match = String::new();
+    while let Some(last) = input.pop() {
+        let local_longest = find_longest_common(last,&input);
+        if local_longest.len() > longest_match.len() {
+            longest_match = local_longest;
+        }
+    }
+    longest_match
+}
